@@ -6,7 +6,7 @@ todoList = document.querySelector('.todo-list'),
 todoCompleted = document.querySelector('.todo-completed'),
 headerbtn = document.querySelector('.header-button');
 
-const todoData = [];
+let todoData = [];
 
 headerbtn.disabled = true;
 headerInput.addEventListener('input', () => {
@@ -14,19 +14,21 @@ headerInput.addEventListener('input', () => {
 });
 
 
-headerbtn.addEventListener('click', () => {
-   localStorage.setItem('ToDo',JSON.stringify (todoData));
 
+headerInput.addEventListener('change', () => {
+   
 });
 
 
 const render = function () {
+  
   todoList.textContent = '';
   todoCompleted.textContent = '';
 
  
   todoData.forEach(function(item){
     const li = document.createElement('li');
+    
     li.classList.add('todo-item');
 
     li.innerHTML = '<span class="text-todo">' + item.value + '</span>'+
@@ -34,15 +36,17 @@ const render = function () {
         '<button class="todo-remove"></button>'+
         '<button class="todo-complete"></button>'+
     '</div>';
-
+    
+    todoControl.querySelectorAll('input').forEach(i => i.value = '');
+    headerbtn.disabled = true;
     if(item.completed){
       todoCompleted.append(li);
     }else {
       todoList.append(li);
     }
-   
-     headerInput.value ='';
-
+     
+    // headerInput.value ='';
+    
 
     const btnTodoCompleted = li.querySelector('.todo-complete');
 
@@ -65,16 +69,17 @@ const render = function () {
 
 todoControl.addEventListener('submit', function (event){
   event.preventDefault();
-
+  
   const newTodo = {
     value: headerInput.value,
     completed:false
   };
   todoData.push(newTodo);
 
+   localStorage.setItem('ToDo',JSON.stringify (todoData));
+   //todoData = JSON.parse(localStorage.getItem("ToDo"));
   render();
 });
-
 
 
 render();
